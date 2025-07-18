@@ -1,0 +1,38 @@
+1. SHUFFLE DECK
+// MODERNISED VERSION OF THE FISHER-YATES SHUFFLE
+iterating from the last card
+    swap last card with a random card
+
+2. EVERYONE GETS 2 CARDS FIRST (facing up)
+iterate through each player
+    push first 2 cards from the deck for each player
+// note that you are always first
+prompt action
+
+3. YOUR ACTION
+// STAND
+iterate through the players
+    push cards into remaining players hands
+    sum total value
+compare players' sets with the dealer
+tabulate new $$$ remaining
+
+// HIT
+draw first card from the deck
+push into hand
+
+// SPLIT
+split into another array
+    push first card from the deck into each array
+
+4. YOUR FRIENDS' ACTIONS
+if get PAIR
+    if value === 2-4 || 6, 7, 9 && dealer hands contains 2x 2-6
+        split
+    if value === 8
+        split
+if get a total value of 9-11
+    double
+
+5. BANKER'S ACTION
+draw if total value < 17

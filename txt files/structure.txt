@@ -1,0 +1,28 @@
+1. player sees LANDING PAGE, which consists of:
+    a. background
+    b. game title
+    c. start button
+        i. will be asked for name
+        ii. will ask for stakes
+        iii. start button
+        iv. cancel button
+    d. rules
+3. player sees GAME PAGE, which consists of:
+    a. background
+        i. differs by stake chosen
+    b. other players 
+        i. player faces
+    c. deck
+    d. $$$ remaining
+    e. player hand
+    f. actions
+        i. hit
+        ii. stand
+        iii. split
+        iv. double down
+    g. deal you first
+4. AT END OF GAME, consider doing an evaluation of personality based on:
+    a. historical record of what you played
+    b. risk appetite -> based on whether you had decent hands but yet still draw OR bad hands but no draw
+    c. greed -> based on your bet amt AND double / split
+    . win rate
