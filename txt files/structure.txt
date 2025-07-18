@@ -17,6 +17,7 @@
     e. player hand
     f. actions
         i. place bet
+            1. quick options
         ii. hit
         iii. stand
         iv. split

@@ -47,17 +47,19 @@ class Deck extends Cards {
 }
 
 class Players {
-  constructor(name, balance, bet) {
+  constructor(name, balance) {
     this.name = name;
-    this.hand = [];
+    this.hand1 = [];
+    this.hand2 = undefined; // if player splits
     this.balance = balance;
-    this.bet = bet;
+    this.bet1 = undefined;
+    this.bet2 = undefined; // for hand2 if player splits
   }
 
-  checkHandValue() {
+  checkHandValue(hand) {
     let totalValue;
     const numOfAces = 0;
-    this.hand.forEach((card) => {
+    hand.forEach((card) => {
       totalValue += card.checkCardValue();
       if (card.rank === "A") {
         numOfAces++;
@@ -83,28 +85,38 @@ class Players {
   }
 
   // player draws a card
-  hit(cardDeck) {
-    const drawnCard = cardDeck.shift();
-    this.hand.push(drawnCard);
+  hit(hand, cardDeck) {
+    // check if player has split if trying to hit hand2
+    // note: without splitting, hand2 = undefined is falsy
+    if (hand) {
+      const drawnCard = cardDeck.shift();
+      hand.push(drawnCard);
+    } else {
+      return -1;
+    }
   }
 
-  // player double downs
-  doubleDown() {
+  // player doubles down
+  doubleDown(bet) {
     // check if sufficient balance
-    if (this.bet * 2 > this.balance) {
+    // note: since balance already deducted the earlier bet, just need to check for another 1x
+    if (bet > this.balance) {
       return -1;
     } else {
-      this.balance - this.bet; // betting already deducted once, so just need to deduct 1x again
-      this.bet *= 2;
+      this.balance - bet;
+      bet *= 2;
     }
   }
 
   // player splits
   splitHand() {
-    // can only split with 2 cards in hand
-    if (this.hand.length !== 2) {
+    // can only split with 2 cards in hand AND have sufficient balance for another bet of equal value
+    if (this.hand1.length !== 2 || this.bet1 > this.balance) {
       return -1; // invalid move
     } else {
+      this.hand2 = [];
+      this.bet2 = this.bet1;
+      this.balance - this.bet2;
     }
   }
 }
@@ -119,9 +131,6 @@ class Players {
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-const test = [{ key1: 1 }, { key2: 2 }];
-for (obj of test) {
-  return [obj];
-  console.log(obj);
-}
-console.log(test[0]);
+const austin = new Players("Austin", 100);
+austin.bet(10);
+console.log(austin);
