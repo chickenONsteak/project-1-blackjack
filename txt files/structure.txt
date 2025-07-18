@@ -16,13 +16,14 @@
     d. $$$ remaining
     e. player hand
     f. actions
-        i. hit
-        ii. stand
-        iii. split
-        iv. double down
+        i. place bet
+        ii. hit
+        iii. stand
+        iv. split
+        v. double down
     g. deal you first
 4. AT END OF GAME, consider doing an evaluation of personality based on:
     a. historical record of what you played
     b. risk appetite -> based on whether you had decent hands but yet still draw OR bad hands but no draw
     c. greed -> based on your bet amt AND double / split
-    . win rate
+    d. win rate
