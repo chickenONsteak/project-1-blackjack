@@ -49,22 +49,32 @@
         <div id="p3hand1"></div>
         <div id="p3hand2"></div>
       </div>
-      <div id="place-bets">
+      <div id="place-bets" style="display: none">
         <input type="number" name="amount" id="amount" />
         <div id="quick-bets">
           <button class="btn btn-primary" id="quick1">100</button>
           <button class="btn btn-primary" id="quick2">500</button>
-          <button class="btn btn-primary" id="quick3">1000</button>
+          <button class="btn btn-primary" id="quick3">1,000</button>
         </div>
         <button class="btn btn-primary" id="bet">Place bet</button>
       </div>
-
-      <div class="row" id="action-buttons">
+      <div id="dealer-hands"></div>
+      <div id="hand1"></div>
+      <div id="bet1">
+        <div>Initial bet:</div>
+        <div id="amount1">$ 1,000</div>
+      </div>
+      <div id="hand2"></div>
+      <div id="bet2">
+        <div>Second bet:</div>
+        <div id="amount2">$ 1,000</div>
+      </div>
+      <div id="action-buttons">
         <button class="btn btn-primary" id="hit">Hit</button>
         <button class="btn btn-primary" id="stand">Stand</button>
-        <button class="btn btn-primary" id="split">Split</button>
         <button class="btn btn-primary" id="double-down">Double down</button>
       </div>
+      <button class="btn btn-primary" id="split">Split</button>
     </div>
   </body>
   <script src="script.js"></script>

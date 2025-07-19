@@ -73,15 +73,14 @@
 
 #place-bets {
   grid-column: 5 / span 2;
-  grid-row: 4 / span 3;
+  grid-row: 5 / span 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 #amount {
-  margin-top: 30px;
   width: 20rem;
   height: 3rem;
   font-size: 2rem;
@@ -98,6 +97,7 @@
 }
 
 #quick-bets {
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   gap: 40px;
@@ -114,4 +114,97 @@
   margin: 0;
   padding: 0;
   margin-bottom: 50px;
+}
+
+#bet1 {
+  grid-row: 6;
+  grid-column: 5 / span 2;
+  display: flex;
+  align-self: end;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.5rem;
+  height: 2rem;
+  border: 5px ridge gray;
+  background-color: whitesmoke;
+}
+
+#bet2 {
+  grid-row: 4;
+  grid-column: 5 / span 2;
+  display: flex;
+  align-self: end;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.5rem;
+  height: 2rem;
+  border: 5px ridge gray;
+  background-color: whitesmoke;
+}
+
+#action-buttons {
+  grid-column: 4 / span 4;
+  grid-row: 7;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+#hit,
+#stand,
+#double-down {
+  background-color: #8fbc8f;
+  border: 2px ridge white;
+  width: 8rem;
+  height: 2.5rem;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
+}
+
+#split {
+  grid-column: 4 / span 4;
+  grid-row: 8;
+  background-color: #b22222;
+  border: 2px ridge white;
+  width: 10rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  margin-top: -2rem;
+}
+
+#dealer-hands {
+  grid-column: 3 / span 6;
+  grid-row: 1 / span 2;
+  height: 11rem;
+  width: 8.5rem;
+  background-color: white;
+  margin-top: 3rem;
+  display: flex;
+  justify-self: center;
+}
+
+#hand1 {
+  grid-column: 3 / span 6;
+  grid-row: 5 / span 2;
+  height: 11rem;
+  width: 8.5rem;
+  background-color: white;
+  margin-top: 1rem;
+  display: flex;
+  justify-self: center;
+}
+
+#hand2 {
+  grid-column: 3 / span 6;
+  grid-row: 3 / span 2;
+  height: 11rem;
+  width: 8.5rem;
+  background-color: white;
+  margin-top: 1rem;
+  display: flex;
+  justify-self: center;
 }
