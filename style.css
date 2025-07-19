@@ -179,32 +179,111 @@
 #dealer-hands {
   grid-column: 3 / span 6;
   grid-row: 1 / span 2;
-  height: 11rem;
-  width: 8.5rem;
-  background-color: white;
   margin-top: 3rem;
   display: flex;
   justify-self: center;
+  gap: 0.5rem;
 }
 
 #hand1 {
   grid-column: 3 / span 6;
   grid-row: 5 / span 2;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.test {
   height: 11rem;
   width: 8.5rem;
   background-color: white;
-  margin-top: 1rem;
-  display: flex;
-  justify-self: center;
+  border: 1px solid black;
 }
 
 #hand2 {
   grid-column: 3 / span 6;
   grid-row: 3 / span 2;
-  height: 11rem;
-  width: 8.5rem;
-  background-color: white;
   margin-top: 1rem;
   display: flex;
-  justify-self: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#friend-right-hand {
+  grid-column: 9 / span 2;
+  grid-row: 3 / span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  transform: rotate(320deg);
+}
+
+#friend-left-hand {
+  grid-column: 1 / span 2;
+  grid-row: 3 / span 2;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.3rem;
+  transform: rotate(40deg);
+}
+
+#friend-right {
+  grid-column: 10;
+  grid-row: 5;
+  height: 7rem;
+  width: 7rem;
+  align-self: end;
+  justify-content: end;
+  transform: rotate(330deg);
+}
+
+#friend-left {
+  grid-column: 1;
+  grid-row: 5;
+  height: 7rem;
+  width: 7rem;
+  align-self: end;
+  transform: rotate(40deg);
+  margin-bottom: 1rem;
+}
+
+.friend-test {
+  height: 8rem;
+  width: 6rem;
+  background-color: white;
+  border: 1px solid black;
+}
+
+#friend-right-name {
+  grid-column: 10;
+  grid-row: 6;
+  font-size: 1.5rem;
+  height: 2rem;
+  width: 5rem;
+  border: 5px ridge gray;
+  background-color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(324deg);
+  margin-left: 3.5rem;
+}
+
+#friend-left-name {
+  grid-column: 1;
+  grid-row: 6;
+  font-size: 1.5rem;
+  height: 2rem;
+  width: 5rem;
+  border: 5px ridge gray;
+  background-color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(39deg);
+  margin-top: 0.5rem;
 }
