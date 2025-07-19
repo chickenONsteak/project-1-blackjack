@@ -1,8 +1,24 @@
-body {
-  /* background-image: url("./assets/landingpageimg.avif"); */
-  background-image: url("./assets/background.jpg");
-  background-repeat: no-repeat;
+#landing-bg {
+  background-image: url("./assets/landingpageimg.avif");
   background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: -1;
+}
+
+#game-bg {
+  /* background-image: url("./assets/background.jpg"); */
+  background-image: url("./assets/table-bg.jpg");
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: -1;
 }
 
 .jersey-10-regular {
@@ -25,7 +41,7 @@ body {
   align-items: center;
   background-color: #b22222;
   width: 800px;
-  height: 200px;
+  height: 183px;
   border: 10px ridge white;
 }
 
@@ -43,7 +59,59 @@ body {
   font-size: 1.2rem;
 }
 
-#action-buttons {
+#landing-buttons {
   gap: 6rem;
   margin-top: 9.5rem;
+}
+
+#game-page {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  height: 100vh;
+}
+
+#place-bets {
+  grid-column: 5 / span 2;
+  grid-row: 4 / span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#amount {
+  margin-top: 30px;
+  width: 20rem;
+  height: 3rem;
+  font-size: 2rem;
+}
+
+#bet {
+  background-color: #b22222;
+  border: 5px ridge white;
+  width: 15rem;
+  height: 4rem;
+  font-size: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+#quick-bets {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+#quick1,
+#quick2,
+#quick3 {
+  background-color: #b22222;
+  border: 2px ridge white;
+  width: 5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 50px;
 }

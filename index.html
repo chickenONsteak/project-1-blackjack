@@ -24,17 +24,19 @@
       id="landing-page"
       style="display: none"
     >
+      <div id="landing-bg"></div>
       <div class="row">
         <h1 id="title">
           <span>Blackjack</span>
         </h1>
       </div>
-      <div class="row" id="action-buttons">
+      <div class="row" id="landing-buttons">
         <button class="btn btn-primary" id="start-game">Enter casino</button>
         <button class="btn btn-primary" id="rules">How to play</button>
       </div>
     </div>
-    <div class="container" id="game-page">
+    <div class="jersey-10-regular container" id="game-page">
+      <div id="game-bg"></div>
       <div id="player1">
         <div id="p1hand1"></div>
         <div id="p1hand2"></div>
@@ -47,12 +49,21 @@
         <div id="p3hand1"></div>
         <div id="p3hand2"></div>
       </div>
-      <div class="row">
-        <button class="btn btn-primary">Place bet</button>
-        <button class="btn btn-primary">Hit</button>
-        <button class="btn btn-primary">Stand</button>
-        <button class="btn btn-primary">Split</button>
-        <button class="btn btn-primary">Double down</button>
+      <div id="place-bets">
+        <input type="number" name="amount" id="amount" />
+        <div id="quick-bets">
+          <button class="btn btn-primary" id="quick1">100</button>
+          <button class="btn btn-primary" id="quick2">500</button>
+          <button class="btn btn-primary" id="quick3">1000</button>
+        </div>
+        <button class="btn btn-primary" id="bet">Place bet</button>
+      </div>
+
+      <div class="row" id="action-buttons">
+        <button class="btn btn-primary" id="hit">Hit</button>
+        <button class="btn btn-primary" id="stand">Stand</button>
+        <button class="btn btn-primary" id="split">Split</button>
+        <button class="btn btn-primary" id="double-down">Double down</button>
       </div>
     </div>
   </body>
