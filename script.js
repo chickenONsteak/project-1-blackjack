@@ -203,6 +203,12 @@ const quickBet3 = document.querySelector("#quick3");
 const placeBetButton = document.querySelector("#bet");
 const postBetUI = document.querySelector("#post-bets");
 const amount1Display = document.querySelector("#amount1");
+const actionButtons = document.querySelector("#action-buttons");
+const hitButton = document.querySelector("#hit");
+const standButton = document.querySelector("#stand");
+const doubleDownButton = document.querySelector("#double-down");
+const splitButton = document.querySelector("#split");
+
 /*-------------------------------- Functions --------------------------------*/
 function populateBet(event) {
   const amountStr = event.target.innerText.replace(",", "");
@@ -218,6 +224,7 @@ function placeBet() {
     messageBoard.innerText = `You've bet $${amount} on your hand, game on!`;
     placeBetUI.style.display = "none";
     postBetUI.style.display = "grid";
+    actionButtons.style.display = "flex";
 
     // populate bet1 for hand1
     amount1Display.innerText = amount;
@@ -258,6 +265,18 @@ quickBet2.addEventListener("click", populateBet);
 quickBet3.addEventListener("click", populateBet);
 placeBetButton.addEventListener("click", placeBet);
 
+// AFTER PLACING BETS
+hitButton.addEventListener("click", () => {
+  yen.hit();
+  if (yen.checkHandValue > 21) {
+    actionButtons.style.display = "none";
+    messageBoard.innerText = `It's a bust! Total hand value: ${yen.checkHandValue(
+      hand1
+    )}`; // HAND INPUT IS WRONG
+  }
+});
+
 /*------------------------------- Game Logic --------------------------------*/
+// while (yen.balance > 0) {}
 const deck = new Deck();
 distributeCards();

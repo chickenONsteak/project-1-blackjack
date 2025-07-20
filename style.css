@@ -268,12 +268,12 @@
   gap: 0.5rem;
 }
 
-.test {
+/* .test {
   height: 11rem;
   width: 8.5rem;
   background-color: white;
   border: 1px solid black;
-}
+} */
 
 #hand2 {
   grid-column: 3 / span 6;
