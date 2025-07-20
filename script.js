@@ -2,10 +2,11 @@
 import { cardImages } from "./assets/cards.js";
 
 /*--------------------------------- Classes ---------------------------------*/
-class Cards {
-  constructor(rank, suit) {
+class Card {
+  constructor(rank, suit, img) {
     this.rank = rank;
     this.suit = suit;
+    this.imageURI = img;
   }
 
   // method to convert the non-int values to int
@@ -14,30 +15,29 @@ class Cards {
       return 10;
     } else if (this.rank === "A") {
       return 11;
+    } else {
+      return this.rank;
     }
   }
 }
 
-class Deck extends Cards {
+class Deck {
   constructor(
     rank = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"],
     suit = ["clubs", "diamonds", "hearts", "spades"]
   ) {
-    super(rank, suit);
+    this.rank = rank;
+    this.suit = suit;
     this.deck = [];
   }
 
-  // // to generate a fresh deck of cards
+  // to generate a fresh deck of cards
   generateCards() {
     this.deck = [];
     this.rank.forEach((value) => {
       this.suit.forEach((element) => {
         const imgObjKey = element + value.toString();
-        this.deck.push({
-          rank: value,
-          suit: element,
-          imageURI: cardImages[imgObjKey],
-        });
+        this.deck.push(new Card(value, element, cardImages[imgObjKey]));
       });
     });
   }
@@ -67,8 +67,12 @@ class Players {
   }
 
   checkHandValue(hand) {
-    let totalValue;
-    const numOfAces = 0;
+    if (hand.length === 0) {
+      return 0;
+    }
+
+    let totalValue = 0;
+    let numOfAces = 0;
     hand.forEach((card) => {
       totalValue += card.checkCardValue();
       if (card.rank === "A") {
@@ -148,10 +152,15 @@ class Dealer {
   }
 
   checkHandValue(hand) {
-    let totalValue;
-    const numOfAces = 0;
+    if (hand.length === 0) {
+      return 0;
+    }
+
+    let totalValue = 0;
+    let numOfAces = 0;
     hand.forEach((card) => {
       totalValue += card.checkCardValue();
+      console.log(totalValue);
       if (card.rank === "A") {
         numOfAces++;
       }
@@ -184,9 +193,20 @@ const players = [
   new Players("Yen", 1000, "hand1", "hand2"),
   new Players("Brack", 1000, "friend-left-hand"),
   new Players("Jack", 1000, "friend-right-hand"),
-  new Dealer("Dealer", "dealer-hands"),
 ];
-const [yen, jack, brack, dealer] = players; // destructure to create 3 variables in 1 go
+const [yen, jack, brack] = players; // destructure to create 3 variables in 1 go
+const dealer = new Dealer("Dealer", "dealer-hands");
+let shuffledDeck;
+const playerHand1 = yen.hand1;
+const playerHand2 = yen.hand2;
+const friendLeftHand = brack.hand1;
+const friendRightHand = jack.hand1;
+const dealerHand = dealer.hand1;
+let playerHand1Value;
+let playerHand2Value;
+let friendLeftValue;
+let friendRightValue;
+let dealerValue;
 
 /*---------------------------- Variables (state) ----------------------------*/
 
@@ -208,13 +228,16 @@ const hitButton = document.querySelector("#hit");
 const standButton = document.querySelector("#stand");
 const doubleDownButton = document.querySelector("#double-down");
 const splitButton = document.querySelector("#split");
+const nextHandButton = document.querySelector("#next-hand");
+const bet1Display = document.querySelector("#amount1");
+const bet2Display = document.querySelector("#amount2");
 
 /*-------------------------------- Functions --------------------------------*/
 function populateBet(event) {
   const amountStr = event.target.innerText.replace(",", "");
   const amountInt = parseInt(amountStr);
   betInput.value = amountInt;
-  console.log(amountInt);
+  bet1Display.innerText = amountInt;
 }
 
 function placeBet() {
@@ -241,13 +264,22 @@ function prepareDeck() {
 }
 
 function distributeCards() {
-  const shuffledDeck = prepareDeck();
+  shuffledDeck = prepareDeck();
   // each player draw 2 cards each facing up
   for (let orbits = 0; orbits < 2; orbits++) {
     for (const player of players) {
       player.hit(player.hand1, shuffledDeck, player.hand1UIId);
     }
+    dealer.hit(dealerHand, shuffledDeck, dealer.hand1UIId);
+
+    playerHand1Value = yen.checkHandValue(playerHand1);
+    console.log(playerHand1Value);
   }
+}
+
+function updateBalance(player, betIdUI) {
+  const amount = document.querySelector(`#${betIdUI}`).innerText;
+  player.balance -= amount;
 }
 
 // INCLUDE COMPUTER LOGIC FOR CHECKING VALUE AND DETERMINE STAND/BUST AFTER HITTING
@@ -263,32 +295,71 @@ startButton.addEventListener("click", () => {
 quickBet1.addEventListener("click", populateBet);
 quickBet2.addEventListener("click", populateBet);
 quickBet3.addEventListener("click", populateBet);
-placeBetButton.addEventListener("click", placeBet);
+placeBetButton.addEventListener("click", () => {
+  placeBet();
+  distributeCards();
+});
 
 // AFTER PLACING BETS
 // After pressing hit, will push the card to hand1.
-// If bust, empty the hand1 array and check if there's hand2 (if player split) — continue pushing to hand2
+// If bust, empty the hand1 array and change to value 0, and check if there's hand2 (if player split) — continue pushing to hand2
 hitButton.addEventListener("click", () => {
-  if (yen.hand1.length !== 0) {
-    yen.hit(yen.hand1, shuffledDeck, "hand1");
-    const totalValue = yen.checkHandValue(yen.hand1);
-    if (totalValue > 21) {
-      messageBoard.innerText = `It's a bust! Total hand value: ${totalValue}`;
-      yen.hand1.length = 0; // reset hand1 since bust
+  playerHand1Value = yen.checkHandValue(playerHand1);
+  if (playerHand1Value !== 0) {
+    yen.hit(playerHand1, shuffledDeck, "hand1");
+    playerHand1Value = yen.checkHandValue(playerHand1);
+    if (playerHand1Value > 21) {
+      messageBoard.innerText = `It's a bust! Total hand value: ${playerHand1Value}`;
+      playerHand1.length = 0; // reset hand1 since bust
+      // check if there's a hand2
+      if (playerHand2 === undefined) {
+        actionButtons.style.display = "none";
+        nextHandButton.style.display = "flex";
+      } else {
+        yen.hit(playerHand2, shuffledDeck, "hand2"); // give second card for hand2
+      }
     }
-  } else {
-    if (yen.hand2 !== undefined) {
-      yen.hit(yen.hand2, shuffledDeck, "hand2");
+  }
+  // if player splits, going bust on hand1 will straight away distribute 2nd card to hand2 — hence length >= 2
+  if (playerHand2 !== undefined && playerHand2.length >= 2) {
+    yen.hit(playerHand2, shuffledDeck, "hand2");
+    playerHand2Value = yen.checkHandValue(playerHand2);
+    if (playerHand2Value > 21) {
+      messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
+      actionButtons.style.display = "none";
+      nextHandButton.style.display = "flex";
     }
-  } // HAND INPUT IS WRONG
-
-  yen.hit();
-  if ((yen.checkHandValue > 21) & (hand1.length > 0)) {
-    actionButtons.style.display = "none";
-  } // HAND INPUT IS WRONG
+  }
 });
 
+standButton.addEventListener("click", () => {
+  playerHand1Value = yen.checkHandValue(playerHand1);
+  // if player stand for 1st hand and there is a 2nd hand, draw 1 card for the 2nd hand
+  if (playerHand2 !== undefined) {
+    if (playerHand2.length < 2) {
+      yen.hit(playerHand2, shuffledDeck, "hand2"); // stand is for the 1st hand, and give second card for hand2
+      messageBoard.innerText = "What do you want to do for your 2nd hand?";
+    } else {
+      // if player stand after >= 2 cards in 2nd hand, it means that the stand is for the 2nd hand
+      playerHand2Value = yen.checkHandValue(playerHand2);
+    }
+  }
+  // compare results
+  dealerValue = dealer.checkHandValue(dealerHand);
+  while (dealerValue < 17) {
+    dealer.hit(dealerHand, shuffledDeck, "dealer-hands");
+    dealerValue = dealer.checkHandValue(dealerHand);
+  }
+  if (playerHand1Value > dealerValue && playerHand1Value <= 21) {
+    updateBalance(yen, "amount1");
+    messageBoard.innerText = "Hand 1 won!";
+  }
+  if (playerHand2 !== undefined) {
+    if (playerHand2Value > dealerValue && playerHand2Value <= 21) {
+      updateBalance(yen, "amount2");
+      messageBoard.innerText = "Hand 2 won!";
+    }
+  }
+});
 /*------------------------------- Game Logic --------------------------------*/
 // while (yen.balance > 0) {}
-const deck = new Deck();
-distributeCards();

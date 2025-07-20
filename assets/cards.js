@@ -150,6 +150,7 @@ export const cardImages = {
   spades4,
   spades5,
   spades6,
+  spades7,
   spades8,
   spades9,
   spades10,

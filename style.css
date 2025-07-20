@@ -71,9 +71,10 @@
 #start-game:hover,
 #rules:hover,
 #bet:hover,
-#split:hover {
+#split:hover,
+#next-hand:hover {
   background-color: red;
-  border-color: grey;
+  border-color: white;
 }
 
 #landing-buttons {
@@ -223,6 +224,19 @@
   margin: 0;
   padding: 0;
   margin-top: 0.25rem;
+}
+
+#next-hand {
+  background-color: #b22222;
+  border: 3px ridge white;
+  grid-column: 8;
+  grid-row: 7 / span 2;
+  height: 5rem;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  display: flex;
+  align-self: center;
+  align-items: center;
 }
 
 #split {

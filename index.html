@@ -19,11 +19,7 @@
     />
   </head>
   <body>
-    <div
-      class="jersey-10-regular container"
-      id="landing-page"
-      style="display: none"
-    >
+    <div class="jersey-10-regular container" id="landing-page">
       <div id="landing-bg"></div>
       <h1 id="title">
         <span>Blackjack</span>
@@ -71,7 +67,11 @@
       </div>
     </div>
     <!-- GAME PAGE -->
-    <div class="jersey-10-regular container" id="game-page">
+    <div
+      class="jersey-10-regular container"
+      id="game-page"
+      style="display: none"
+    >
       <div id="game-bg"></div>
       <img
         src="./assets/friend-right.png"
@@ -88,7 +88,7 @@
       <div id="message-board"></div>
 
       <!-- PLACING BETS -->
-      <div id="place-bets" style="display: none">
+      <div id="place-bets">
         <div id="bet-amount">
           <span id="dollar-sign">$ </span>
           <input type="number" name="amount" id="amount" />
@@ -102,7 +102,7 @@
       </div>
 
       <!-- AFTER PLACING BETS -->
-      <div id="post-bets">
+      <div id="post-bets" style="display: none">
         <div id="dealer-hands">
           <!-- <div class="test">a</div>
           <div class="test">b</div>
@@ -118,8 +118,8 @@
           <div class="test">e</div> -->
         </div>
         <div id="bet1">
-          <div>Initial bet:</div>
-          <div id="amount1">$ 1,000</div>
+          <div>Initial bet: $</div>
+          <div id="amount1"></div>
         </div>
         <div id="hand2">
           <!-- <div class="test">a</div>
@@ -137,8 +137,8 @@
           <div class="friend-test"></div> -->
         </div>
         <div id="bet2">
-          <div>Second bet:</div>
-          <div id="amount2">$ 1,000</div>
+          <div>Second bet: $</div>
+          <div id="amount2"></div>
         </div>
         <div id="action-buttons">
           <button class="btn btn-primary" id="hit">Hit</button>
@@ -146,6 +146,7 @@
           <button class="btn btn-primary" id="double-down">Double down</button>
           <button class="btn btn-primary" id="split">Split</button>
         </div>
+        <button class="btn btn-primary" id="next-hand">Next hand</button>
       </div>
     </div>
   </body>
