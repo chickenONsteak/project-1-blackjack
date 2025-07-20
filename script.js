@@ -1,3 +1,6 @@
+/*--------------------------------- Imports ---------------------------------*/
+import { cardImages } from "./assets/cards.js";
+
 /*--------------------------------- Classes ---------------------------------*/
 class Cards {
   constructor(rank, suit) {
@@ -29,10 +32,11 @@ class Deck extends Cards {
     this.deck = [];
     this.rank.forEach((value) => {
       this.suit.forEach((element) => {
+        const imgObjKey = element + value.toString();
         this.deck.push({
           rank: value,
           suit: element,
-          imageURI: element + value.toString(),
+          imageURI: cardImages[imgObjKey],
         });
       });
     });
@@ -51,13 +55,15 @@ class Deck extends Cards {
 }
 
 class Players {
-  constructor(name, balance) {
+  constructor(name, balance, hand1Id, hand2Id) {
     this.name = name;
     this.hand1 = [];
     this.hand2 = undefined; // defined only after player splits
     this.balance = balance;
     this.bet1 = undefined; // defined only after player places bet
     this.bet2 = undefined; // defined only after player splits
+    this.hand1UIId = hand1Id;
+    this.hand2UIId = hand2Id;
   }
 
   checkHandValue(hand) {
@@ -89,17 +95,18 @@ class Players {
   }
 
   // player draws a card
-  hit(hand, cardDeck, handHtmlId) {
+  hit(hand, shuffledDeck, handHtmlId) {
     // check if player has split if trying to hit hand2
     // note: without splitting, hand2 = undefined is falsy while empty array is truthy
     if (hand) {
+      const cardDeck = shuffledDeck.deck;
       const drawnCard = cardDeck.shift();
       hand.push(drawnCard);
 
       // update cards displayed on hand
       const playerHandUI = document.querySelector(`#${handHtmlId}`);
       const img = document.createElement("img");
-      img.src = drawnCard.deck.imageURI;
+      img.src = drawnCard.imageURI;
       img.alt = "front of card"; // FIND A WAY TO IMPROVE THIS
       img.height = 176; // 11rem to px
       playerHandUI.appendChild(img);
@@ -134,9 +141,10 @@ class Players {
 }
 
 class Dealer {
-  constructor(name) {
+  constructor(name, hand1Id) {
     this.name = name;
     this.hand1 = [];
+    this.hand1UIId = hand1Id;
   }
 
   checkHandValue(hand) {
@@ -156,18 +164,27 @@ class Dealer {
     return totalValue;
   }
 
-  hit(hand, cardDeck) {
+  hit(hand, shuffledDeck, handHtmlId) {
+    const cardDeck = shuffledDeck.deck;
     const drawnCard = cardDeck.shift();
     hand.push(drawnCard);
+
+    // update cards displayed on hand
+    const playerHandUI = document.querySelector(`#${handHtmlId}`);
+    const img = document.createElement("img");
+    img.src = drawnCard.imageURI;
+    img.alt = "front of card"; // FIND A WAY TO IMPROVE THIS
+    img.height = 176; // 11rem to px
+    playerHandUI.appendChild(img);
   }
 }
 
 /*-------------------------------- Constants --------------------------------*/
 const players = [
-  new Players("Yen", 1000),
-  new Players("Brack", 1000),
-  new Players("Jack", 1000),
-  new Dealer("Dealer"),
+  new Players("Yen", 1000, "hand1", "hand2"),
+  new Players("Brack", 1000, "friend-left-hand"),
+  new Players("Jack", 1000, "friend-right-hand"),
+  new Dealer("Dealer", "dealer-hands"),
 ];
 const [yen, jack, brack, dealer] = players; // destructure to create 3 variables in 1 go
 
@@ -221,7 +238,7 @@ function distributeCards() {
   // each player draw 2 cards each facing up
   for (let orbits = 0; orbits < 2; orbits++) {
     for (const player of players) {
-      player.hit(player.hand1, shuffledDeck);
+      player.hit(player.hand1, shuffledDeck, player.hand1UIId);
     }
   }
 }
@@ -242,4 +259,5 @@ quickBet3.addEventListener("click", populateBet);
 placeBetButton.addEventListener("click", placeBet);
 
 /*------------------------------- Game Logic --------------------------------*/
-// while (yen.balance > 0) {}
+const deck = new Deck();
+distributeCards();
