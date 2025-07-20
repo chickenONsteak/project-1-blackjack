@@ -73,6 +73,7 @@
 #bet:hover,
 #split:hover {
   background-color: red;
+  border-color: grey;
 }
 
 #landing-buttons {
@@ -116,7 +117,7 @@
   width: 19rem;
   height: 3rem;
   display: flex;
-  justify-items: center;
+  text-align: center;
 }
 
 #bet {
@@ -159,9 +160,22 @@
 }
 
 #message-board {
-  height: 2rem;
-  width: 2rem;
-  background-color: whitesmoke;
+  grid-column: 4 / span 4;
+  grid-row: 7 / span 2;
+  margin-top: 1rem;
+  height: 8rem;
+  width: 100%;
+  background-color: lightgrey;
+  border: 5px groove grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  font-size: 2rem;
+  color: slategrey;
+  word-break: break-word;
+  text-align: center;
+  padding: 2rem;
 }
 
 #bet1 {
@@ -191,7 +205,7 @@
 }
 
 #action-buttons {
-  grid-column: 4 / span 4;
+  grid-column: 3 / span 6;
   grid-row: 7;
   display: flex;
   justify-content: space-around;
@@ -208,6 +222,7 @@
   font-size: 1.2rem;
   margin: 0;
   padding: 0;
+  margin-top: 0.25rem;
 }
 
 #split {
@@ -221,7 +236,8 @@
   display: flex;
   justify-content: center;
   justify-self: center;
-  margin-top: -2rem;
+  margin-bottom: 3rem;
+  align-items: center;
 }
 
 #post-bets {
