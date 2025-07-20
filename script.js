@@ -134,7 +134,7 @@ class Players {
   // player splits
   splitHand() {
     // can only split with 2 cards in hand AND have sufficient balance for another bet of equal value
-    if (this.hand1.length !== 2 || this.bet1 > this.balance) {
+    if (this.hand1.length !== 2 || this.bet1 > this.balance || !this.hand2) {
       return -1; // invalid move
     } else {
       this.hand2 = [];
@@ -207,6 +207,7 @@ let playerHand2Value;
 let friendLeftValue;
 let friendRightValue;
 let dealerValue;
+let standHand1 = false;
 
 /*---------------------------- Variables (state) ----------------------------*/
 
@@ -231,6 +232,7 @@ const splitButton = document.querySelector("#split");
 const nextHandButton = document.querySelector("#next-hand");
 const bet1Display = document.querySelector("#amount1");
 const bet2Display = document.querySelector("#amount2");
+const playerHand2UI = document.querySelector("#hand2");
 
 /*-------------------------------- Functions --------------------------------*/
 function populateBet(event) {
@@ -280,6 +282,21 @@ function distributeCards() {
 function updateBalance(player, betIdUI) {
   const amount = document.querySelector(`#${betIdUI}`).innerText;
   player.balance -= amount;
+}
+
+function resetHand() {
+  // reset bets
+  [yen.bet1, yen.bet2] = [undefined, undefined];
+  // remove images of cards distributed
+  for (let player of players) {
+    for (let card of player.hand1) {
+    }
+  }
+  // reset cards distributed
+  [playerHand1.length, playerHand2] = [0, undefined];
+  [friendLeftHand.length, friendRightHand.length, dealerHand.length] = [
+    0, 0, 0,
+  ];
 }
 
 // INCLUDE COMPUTER LOGIC FOR CHECKING VALUE AND DETERMINE STAND/BUST AFTER HITTING
@@ -333,6 +350,7 @@ hitButton.addEventListener("click", () => {
 });
 
 standButton.addEventListener("click", () => {
+  standHand1 = true;
   playerHand1Value = yen.checkHandValue(playerHand1);
   // if player stand for 1st hand and there is a 2nd hand, draw 1 card for the 2nd hand
   if (playerHand2 !== undefined) {
@@ -360,6 +378,34 @@ standButton.addEventListener("click", () => {
       messageBoard.innerText = "Hand 2 won!";
     }
   }
+});
+
+doubleDownButton.addEventListener("click", () => {
+  if (standHand1) {
+    const isDoubled = yen.doubleDown(yen.bet2);
+    if (isDoubled !== -1) {
+      bet2Display.innerText = yen.bet2;
+    } else {
+      messageBoard.innerText = "Not enough funds to double down.";
+    }
+  }
+});
+
+splitButton.addEventListener("click", () => {
+  const split = yen.splitHand();
+  if (split === -1) {
+    // update second bet
+    bet2Display.innerText = yen.bet2;
+    // update hand displayed
+    playerHand2UI.style.display = "flex";
+  } else {
+    messageBoard.innerText = "Unable to split.";
+  }
+});
+
+nextHandButton.addEventListener("click", () => {
+  standHand1 = false;
+  resetHand();
 });
 /*------------------------------- Game Logic --------------------------------*/
 // while (yen.balance > 0) {}
