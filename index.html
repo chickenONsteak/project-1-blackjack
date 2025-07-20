@@ -25,32 +25,74 @@
       style="display: none"
     >
       <div id="landing-bg"></div>
-      <div class="row">
-        <h1 id="title">
-          <span>Blackjack</span>
-        </h1>
-      </div>
+      <h1 id="title">
+        <span>Blackjack</span>
+      </h1>
       <div class="row" id="landing-buttons">
         <button class="btn btn-primary" id="start-game">Enter casino</button>
-        <button class="btn btn-primary" id="rules">How to play</button>
+        <button
+          class="btn btn-primary"
+          id="rules"
+          data-bs-toggle="modal"
+          data-bs-target="#rules-modal"
+        >
+          How to play
+        </button>
+        <div class="modal" tabindex="-1" id="rules-modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <p>Modal body text goes here.</p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- GAME PAGE -->
     <div class="jersey-10-regular container" id="game-page">
       <div id="game-bg"></div>
-      <div id="player1">
-        <div id="p1hand1"></div>
-        <div id="p1hand2"></div>
-      </div>
-      <div id="player2">
-        <div id="p2hand1"></div>
-        <div id="p2hand2"></div>
-      </div>
-      <div id="player3">
-        <div id="p3hand1"></div>
-        <div id="p3hand2"></div>
-      </div>
-      <div id="place-bets" style="display: none">
-        <input type="number" name="amount" id="amount" />
+      <img
+        src="./assets/friend-right.png"
+        alt="hamster dressed as a wizard holding a wand"
+        id="friend-right"
+      />
+      <div id="friend-right-name">Jack</div>
+      <img
+        src="./assets/friend-left.png"
+        alt="hamster holding a gun"
+        id="friend-left"
+      />
+      <div id="friend-left-name">Brack</div>
+
+      <!-- PLACING BETS -->
+      <div id="place-bets">
+        <div id="bet-amount">
+          <span id="dollar-sign">$ </span>
+          <input type="number" name="amount" id="amount" />
+        </div>
+
         <div id="quick-bets">
           <button class="btn btn-primary" id="quick1">100</button>
           <button class="btn btn-primary" id="quick2">500</button>
@@ -58,62 +100,59 @@
         </div>
         <button class="btn btn-primary" id="bet">Place bet</button>
       </div>
-      <div id="dealer-hands">
-        <div class="test">a</div>
-        <div class="test">b</div>
-        <div class="test">c</div>
-        <div class="test">d</div>
-        <div class="test">e</div>
+
+      <!-- AFTER PLACING BETS -->
+      <div id="post-bets" style="display: none">
+        <div id="dealer-hands">
+          <div class="test">a</div>
+          <div class="test">b</div>
+          <div class="test">c</div>
+          <div class="test">d</div>
+          <div class="test">e</div>
+        </div>
+        <div id="hand1">
+          <div class="test">a</div>
+          <div class="test">b</div>
+          <div class="test">c</div>
+          <div class="test">d</div>
+          <div class="test">e</div>
+        </div>
+        <div id="bet1">
+          <div>Initial bet:</div>
+          <div id="amount1">$ 1,000</div>
+        </div>
+        <div id="hand2">
+          <div class="test">a</div>
+          <div class="test">b</div>
+          <div class="test">c</div>
+          <div class="test">d</div>
+          <div class="test">e</div>
+        </div>
+        <div id="friend-right-hand">
+          <div class="friend-test"></div>
+          <div class="friend-test"></div>
+        </div>
+        <div id="friend-left-hand">
+          <div class="friend-test"></div>
+          <div class="friend-test"></div>
+        </div>
+        <div id="bet2">
+          <div>Second bet:</div>
+          <div id="amount2">$ 1,000</div>
+        </div>
+        <div id="action-buttons">
+          <button class="btn btn-primary" id="hit">Hit</button>
+          <button class="btn btn-primary" id="stand">Stand</button>
+          <button class="btn btn-primary" id="double-down">Double down</button>
+        </div>
+        <button class="btn btn-primary" id="split">Split</button>
       </div>
-      <div id="hand1">
-        <div class="test">a</div>
-        <div class="test">b</div>
-        <div class="test">c</div>
-        <div class="test">d</div>
-        <div class="test">e</div>
-      </div>
-      <div id="bet1">
-        <div>Initial bet:</div>
-        <div id="amount1">$ 1,000</div>
-      </div>
-      <div id="hand2">
-        <div class="test">a</div>
-        <div class="test">b</div>
-        <div class="test">c</div>
-        <div class="test">d</div>
-        <div class="test">e</div>
-      </div>
-      <img
-        src="./assets/friend-right.png"
-        alt="hamster dressed as a wizard holding a wand"
-        id="friend-right"
-      />
-      <div id="friend-right-name">Jack</div>
-      <div id="friend-right-hand">
-        <div class="friend-test"></div>
-        <div class="friend-test"></div>
-      </div>
-      <img
-        src="./assets/friend-left.png"
-        alt="hamster holding a gun"
-        id="friend-left"
-      />
-      <div id="friend-left-name">Brack</div>
-      <div id="friend-left-hand">
-        <div class="friend-test"></div>
-        <div class="friend-test"></div>
-      </div>
-      <div id="bet2">
-        <div>Second bet:</div>
-        <div id="amount2">$ 1,000</div>
-      </div>
-      <div id="action-buttons">
-        <button class="btn btn-primary" id="hit">Hit</button>
-        <button class="btn btn-primary" id="stand">Stand</button>
-        <button class="btn btn-primary" id="double-down">Double down</button>
-      </div>
-      <button class="btn btn-primary" id="split">Split</button>
     </div>
   </body>
   <script src="script.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"
+  ></script>
 </html>

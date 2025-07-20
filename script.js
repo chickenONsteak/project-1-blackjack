@@ -50,10 +50,10 @@ class Players {
   constructor(name, balance) {
     this.name = name;
     this.hand1 = [];
-    this.hand2 = undefined; // if player splits
+    this.hand2 = undefined; // defined only after player splits
     this.balance = balance;
-    this.bet1 = undefined;
-    this.bet2 = undefined; // for hand2 if player splits
+    this.bet1 = undefined; // defined only after player places bet
+    this.bet2 = undefined; // defined only after player splits
   }
 
   checkHandValue(hand) {
@@ -80,7 +80,7 @@ class Players {
       return -1; // invalid move
     } else {
       this.balance -= amount;
-      this.bet = amount;
+      this.bet1 = amount;
     }
   }
 
@@ -122,15 +122,41 @@ class Players {
 }
 
 /*-------------------------------- Constants --------------------------------*/
+const yen = new Players("Yen", 1000);
 
 /*---------------------------- Variables (state) ----------------------------*/
 
 /*------------------------ Cached Element References ------------------------*/
-
+const landingPage = document.querySelector("#landing-page");
+const startButton = document.querySelector("#start-game");
+const gamePage = document.querySelector("#game-page");
+const betInput = document.querySelector("#amount");
+const quickBet1 = document.querySelector("#quick1");
+const quickBet2 = document.querySelector("#quick2");
+const quickBet3 = document.querySelector("#quick3");
+const placeBetButton = document.querySelector("#bet");
 /*-------------------------------- Functions --------------------------------*/
+function populateBet(event) {
+  const amountStr = event.target.innerText.replace(",", "");
+  const amountInt = parseInt(amountStr);
+  betInput.value = amountInt;
+  console.log(amountInt);
+}
+
+function placeBet() {
+  const amount = betInput.value;
+  yen.bet(amount);
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
+// LANDING PAGE
+startButton.addEventListener("click", () => {
+  landingPage.style.display = "none";
+  gamePage.style.display = "grid";
+});
 
-const austin = new Players("Austin", 100);
-austin.bet(10);
-console.log(austin);
+// PLACING BETS
+quickBet1.addEventListener("click", populateBet);
+quickBet2.addEventListener("click", populateBet);
+quickBet3.addEventListener("click", populateBet);
+placeBetButton.addEventListener("click", () => {});
