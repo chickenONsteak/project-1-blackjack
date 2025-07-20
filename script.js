@@ -266,14 +266,26 @@ quickBet3.addEventListener("click", populateBet);
 placeBetButton.addEventListener("click", placeBet);
 
 // AFTER PLACING BETS
+// After pressing hit, will push the card to hand1.
+// If bust, empty the hand1 array and check if there's hand2 (if player split) — continue pushing to hand2
 hitButton.addEventListener("click", () => {
+  if (yen.hand1.length !== 0) {
+    yen.hit(yen.hand1, shuffledDeck, "hand1");
+    const totalValue = yen.checkHandValue(yen.hand1);
+    if (totalValue > 21) {
+      messageBoard.innerText = `It's a bust! Total hand value: ${totalValue}`;
+      yen.hand1.length = 0; // reset hand1 since bust
+    }
+  } else {
+    if (yen.hand2 !== undefined) {
+      yen.hit(yen.hand2, shuffledDeck, "hand2");
+    }
+  } // HAND INPUT IS WRONG
+
   yen.hit();
-  if (yen.checkHandValue > 21) {
+  if ((yen.checkHandValue > 21) & (hand1.length > 0)) {
     actionButtons.style.display = "none";
-    messageBoard.innerText = `It's a bust! Total hand value: ${yen.checkHandValue(
-      hand1
-    )}`; // HAND INPUT IS WRONG
-  }
+  } // HAND INPUT IS WRONG
 });
 
 /*------------------------------- Game Logic --------------------------------*/
