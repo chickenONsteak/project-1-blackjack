@@ -224,6 +224,8 @@
   margin: 0;
   padding: 0;
   margin-top: 0.25rem;
+  justify-content: center;
+  align-items: center;
 }
 
 #next-hand {
@@ -237,6 +239,7 @@
   display: flex;
   align-self: center;
   align-items: center;
+  justify-content: center;
 }
 
 #split {

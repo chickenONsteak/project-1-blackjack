@@ -40,7 +40,6 @@ class Deck {
         this.deck.push(new Card(value, element, cardImages[imgObjKey]));
       });
     });
-    console.log(this.deck);
   }
 
   // use the modified Fisher-Yates shuffle algorithm
@@ -113,7 +112,6 @@ class Players {
           break;
         }
       }
-      console.log(drawnCard);
       hand.push(drawnCard);
 
       // update cards displayed on hand
@@ -129,10 +127,10 @@ class Players {
   }
 
   // player doubles down
-  doubleDown(bet) {
+  doubleDown(bet, hand) {
     // check if sufficient balance
     // note: since balance already deducted the earlier bet, just need to check for another 1x
-    if (bet > this.balance) {
+    if (bet > this.balance || hand.length !== 2) {
       return -1;
     } else {
       this.balance - bet;
@@ -143,12 +141,30 @@ class Players {
   // player splits
   splitHand() {
     // can only split with 2 cards in hand AND have sufficient balance for another bet of equal value
-    if (this.hand1.length !== 2 || this.bet1 > this.balance || !this.hand2) {
+    const card1Rank = this.hand1[0].rank;
+    const card2Rank = this.hand1[1].rank;
+    if (
+      this.hand1.length !== 2 ||
+      this.bet1 > this.balance ||
+      card1Rank !== card2Rank
+    ) {
       return -1; // invalid move
     } else {
       this.hand2 = [];
+      this.hand2.push(this.hand1.shift());
       this.bet2 = this.bet1;
-      this.balance - this.bet2;
+      this.balance -= this.bet2;
+
+      // UPDATE DISPLAY
+      // remove button
+      splitButton.style.display = "none";
+      // move card
+      playerHand2UI.style.display = "flex";
+      const moveCard = document.querySelector("#hand1 img");
+      playerHand2UI.appendChild(moveCard);
+      // update second bet
+      bet2AmountDisplay.style.display = "flex";
+      bet2Display.innerText = yen.bet2;
     }
   }
 }
@@ -169,7 +185,6 @@ class Dealer {
     let numOfAces = 0;
     hand.forEach((card) => {
       totalValue += card.checkCardValue();
-      console.log(totalValue);
       if (card.rank === "A") {
         numOfAces++;
       }
@@ -192,7 +207,6 @@ class Dealer {
         break;
       }
     }
-    console.log(drawnCard);
     hand.push(drawnCard);
 
     // update cards displayed on hand
@@ -247,6 +261,7 @@ const standButton = document.querySelector("#stand");
 const doubleDownButton = document.querySelector("#double-down");
 const splitButton = document.querySelector("#split");
 const nextHandButton = document.querySelector("#next-hand");
+const bet2AmountDisplay = document.querySelector("#bet2");
 const bet1Display = document.querySelector("#amount1");
 const bet2Display = document.querySelector("#amount2");
 const playerHand1UI = document.querySelector("#hand1");
@@ -271,11 +286,15 @@ function placeBet() {
     placeBetUI.style.display = "none";
     postBetUI.style.display = "grid";
     actionButtons.style.display = "flex";
+    hitButton.style.display = "flex";
+    doubleDownButton.style.display = "flex";
+    splitButton.style.display = "flex";
 
     // populate bet1 for hand1
     amount1Display.innerText = amount;
   } else {
     messageBoard.innerText = `You can only bet an amount >$100 and less than your balance: $${yen.balance}.`;
+    return -1;
   }
 }
 
@@ -297,9 +316,14 @@ function distributeCards() {
   }
 }
 
-function updateBalance(player, betIdUI) {
-  const amount = document.querySelector(`#${betIdUI}`).innerText;
-  player.balance -= amount;
+function updateTieBalance(player, betIdUI) {
+  const amount = parseInt(document.querySelector(`#${betIdUI}`).innerText);
+  player.balance += amount;
+}
+
+function updateWinBalance(player, betIdUI) {
+  const amount = parseInt(document.querySelector(`#${betIdUI}`).innerText);
+  player.balance += amount * 2;
 }
 
 function resetHand() {
@@ -352,8 +376,9 @@ quickBet1.addEventListener("click", populateBet);
 quickBet2.addEventListener("click", populateBet);
 quickBet3.addEventListener("click", populateBet);
 placeBetButton.addEventListener("click", () => {
-  placeBet();
-  distributeCards();
+  if (placeBet() !== -1) {
+    distributeCards();
+  }
 });
 
 // AFTER PLACING BETS
@@ -367,36 +392,58 @@ hitButton.addEventListener("click", () => {
     messageBoard.innerText = `You got ${playerHand1Value} in total.`;
     if (playerHand1Value > 21) {
       messageBoard.innerText = `Unlucky! You got ${playerHand1Value} in total.`;
+
       playerHand1.length = 0; // reset hand1 since bust
       // check if there's a hand2
       if (playerHand2 === undefined) {
         actionButtons.style.display = "none";
         nextHandButton.style.display = "flex";
       } else {
-        yen.hit(playerHand2, "hand2"); // give second card for hand2
+        messageBoard.innerText = `Bust! You lost $${yen.bet1}.\nYou still got another hand though!`;
+        // yen.hit(playerHand2, "hand2"); // give second card for hand2
+      }
+    }
+  } else {
+    // IF hand1 bust
+    if (playerHand2 !== undefined) {
+      // IF there is hand2, push to hand2 until bust
+      yen.hit(playerHand2, "hand2");
+      playerHand2Value = yen.checkHandValue(playerHand2);
+      messageBoard.innerText = `You got ${playerHand2Value} in total.`;
+      console.log(playerHand2Value);
+      if (playerHand2Value > 21) {
+        messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
+        actionButtons.style.display = "none";
+        nextHandButton.style.display = "flex";
       }
     }
   }
   // if player splits, going bust on hand1 will straight away distribute 2nd card to hand2 — hence length >= 2
-  if (playerHand2 !== undefined && playerHand2.length >= 2) {
-    yen.hit(playerHand2, "hand2");
-    playerHand2Value = yen.checkHandValue(playerHand2);
-    if (playerHand2Value > 21) {
-      messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
-      actionButtons.style.display = "none";
-      nextHandButton.style.display = "flex";
-    }
-  }
+  // if (playerHand2 !== undefined && playerHand2.length >= 2) {
+  //   yen.hit(playerHand2, "hand2");
+  //   playerHand2Value = yen.checkHandValue(playerHand2);
+  //   messageBoard.innerText = `You got ${playerHand2Value} in total.`;
+  //   console.log(playerHand2Value);
+  //   if (playerHand2Value > 21) {
+  //     messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
+  //     actionButtons.style.display = "none";
+  //     nextHandButton.style.display = "flex";
+  //   }
+  // }
 });
 
 standButton.addEventListener("click", () => {
   standHand1 = true;
   playerHand1Value = yen.checkHandValue(playerHand1);
   // if player stand for 1st hand and there is a 2nd hand, draw 1 card for the 2nd hand
+  playerHand2 = yen.hand2;
+  console.log(yen.hand2);
+  console.log(playerHand2);
   if (playerHand2 !== undefined) {
     if (playerHand2.length < 2) {
       yen.hit(playerHand2, "hand2"); // stand is for the 1st hand, and give second card for hand2
-      messageBoard.innerText = "What do you want to do for your 2nd hand?";
+      playerHand2Value = yen.checkHandValue(playerHand2);
+      messageBoard.innerText = `What do you want to do with your 2nd hand? Total value: ${playerHand2Value}.`;
     } else {
       // if player stand after >= 2 cards in 2nd hand, it means that the stand is for the 2nd hand
       actionButtons.style.display = "none";
@@ -408,36 +455,113 @@ standButton.addEventListener("click", () => {
     actionButtons.style.display = "none";
     nextHandButton.style.display = "flex";
   }
-  // compare results
+  // COMPARE RESULTS
   dealerValue = dealer.checkHandValue(dealerHand);
   while (dealerValue < 17) {
     dealer.hit(dealerHand, "dealer-hands");
     dealerValue = dealer.checkHandValue(dealerHand);
   }
-  if (playerHand1Value > dealerValue && playerHand1Value <= 21) {
-    updateBalance(yen, "amount1");
-    messageBoard.innerText = `You won $${yen.bet1}!`;
+  // COMPARE HAND1 VS DEALER
+  if (playerHand1Value > dealerValue) {
+    if (playerHand1Value <= 21 && playerHand2 === undefined) {
+      updateWinBalance(yen, "amount1");
+      messageBoard.innerText = `You won $${yen.bet1}!`;
+    } else if (playerHand1Value <= 21 && playerHand2 !== undefined) {
+      updateWinBalance(yen, "amount1");
+      messageBoard.innerText = `You won $${yen.bet1}! Now, what do you want to do with your 2nd hand?`;
+    }
+  } else if (playerHand1Value < dealerValue) {
+    if (dealerValue <= 21 && playerHand2 === undefined) {
+      // dealer has bigger hands
+      messageBoard.innerText = `You loss $${yen.bet1}!`;
+    } else if (dealerValue <= 21 && playerHand2 !== undefined) {
+      messageBoard.innerText = `You loss $${yen.bet1}! Now, what do you want to do with your 2nd hand?`;
+    } else {
+      // dealer bust
+      updateWinBalance(yen, "amount1");
+      messageBoard.innerText = `You won $${yen.bet1}!`;
+      if (playerHand2 !== undefined) {
+        messageBoard.innerText = `You won $${yen.bet1}! Now, what do you want to do with your 2nd hand?`;
+      }
+    }
+  } else {
+    // if dealer and player have same value
+    updateTieBalance(yen, "amount1");
+    messageBoard.innerText = "It's a tie!";
   }
+  // COMPARE HAND2 VS DEALER
   if (playerHand2 !== undefined) {
-    if (playerHand2Value > dealerValue && playerHand2Value <= 21) {
-      updateBalance(yen, "amount2");
-      messageBoard.innerText = `You won $${yen.bet2}!`;
+    if (playerHand1Value > dealerValue) {
+      if (playerHand2Value <= 21) {
+        updateWinBalance(yen, "amount2");
+        messageBoard.innerText = `You won $${yen.bet2}!`;
+      }
+    } else if (playerHand2Value < dealerValue) {
+      if (dealerValue <= 21) {
+        // dealer has bigger hands
+        messageBoard.innerText = `You loss $${yen.bet2}!`;
+      } else {
+        // dealer bust
+        updateWinBalance(yen, "amount2");
+        messageBoard.innerText = `You won $${yen.bet2}!`;
+      }
+    } else {
+      // if dealer and player have same value
+      updateTieBalance(yen, "amount2");
+      messageBoard.innerText = "It's a tie!";
     }
   }
 });
 
 doubleDownButton.addEventListener("click", () => {
   if (standHand1) {
-    const isDoubled = yen.doubleDown(yen.bet2);
+    // if hand1 has been stand
+    const isDoubled = yen.doubleDown(yen.bet2, playerHand2);
     if (isDoubled !== -1) {
-      bet2Display.innerText = yen.bet2 * 2;
+      doubleDownButton.style.display = "none";
+      yen.balance -= yen.bet2;
+      yen.bet2 *= 2;
+      bet2Display.innerText = yen.bet2;
+      messageBoard.innerText = `You've doubled your bet size to $${yen.bet2}!`;
+      yen.hit(playerHand2, yen.hand2UIId);
+      hitButton.style.display = "none";
+      doubleDownButton.style.display = "none";
+      splitButton.style.display = "none";
+      playerHand2Value = yen.checkHandValue(playerHand2);
+      if (playerHand2Value > 21) {
+        messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
+        actionButtons.style.display = "none";
+        nextHandButton.style.display = "flex";
+      }
     } else {
       messageBoard.innerText = "Not enough funds to double down.";
     }
   } else {
-    const isDoubled = yen.doubleDown(yen.bet1);
+    // if doubling hand1
+    const isDoubled = yen.doubleDown(yen.bet1, playerHand1);
     if (isDoubled !== -1) {
-      bet1Display.innerText = yen.bet1 * 2;
+      doubleDownButton.style.display = "none";
+      yen.balance -= yen.bet1;
+      yen.bet1 *= 2;
+      bet1Display.innerText = yen.bet1;
+      messageBoard.innerText = `You've doubled your bet size to $${yen.bet1}!`;
+      yen.hit(playerHand1, yen.hand1UIId);
+      playerHand1Value = yen.checkHandValue(playerHand1);
+      if (playerHand1Value > 21 && playerHand2 === undefined) {
+        messageBoard.innerText = `It's a bust! Total hand value: ${playerHand1Value}`;
+        actionButtons.style.display = "none";
+        nextHandButton.style.display = "flex";
+      } else if (playerHand1Value > 21 && playerHand2 !== undefined) {
+        // hand1 bust and there is a hand2
+        playerHand2 = yen.checkHandValue(playerHand2);
+        messageBoard.innerText = `It's a bust! You still got another hand though. Total value: ${playerHand2}.`;
+      } else if (playerHand1Value <= 21 && playerHand2 !== undefined) {
+        hitButton.style.display = "flex";
+        doubleDownButton.style.display = "flex";
+      } else {
+        hitButton.style.display = "none";
+        splitButton.style.display = "none";
+      }
     } else {
       messageBoard.innerText = "Not enough funds to double down.";
     }
@@ -446,11 +570,8 @@ doubleDownButton.addEventListener("click", () => {
 
 splitButton.addEventListener("click", () => {
   const split = yen.splitHand();
-  if (split === -1) {
-    // update second bet
-    bet2Display.innerText = yen.bet2;
-    // update hand displayed
-    playerHand2UI.style.display = "flex";
+  if (split !== -1) {
+    playerHand2 = yen.hand2;
   } else {
     messageBoard.innerText = "Unable to split.";
   }
@@ -463,4 +584,6 @@ nextHandButton.addEventListener("click", () => {
   resetHandUI();
   placeBetUI.style.display = "flex";
   postBetUI.style.display = "none";
+  bet2AmountDisplay.style.display = "none";
+  messageBoard.innerText = `Place your bets!\nYou have $${yen.balance} remaining.`;
 });
