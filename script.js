@@ -232,6 +232,7 @@ const splitButton = document.querySelector("#split");
 const nextHandButton = document.querySelector("#next-hand");
 const bet1Display = document.querySelector("#amount1");
 const bet2Display = document.querySelector("#amount2");
+const playerHand1UI = document.querySelector("#hand1");
 const playerHand2UI = document.querySelector("#hand2");
 
 /*-------------------------------- Functions --------------------------------*/
@@ -287,11 +288,7 @@ function updateBalance(player, betIdUI) {
 function resetHand() {
   // reset bets
   [yen.bet1, yen.bet2] = [undefined, undefined];
-  // remove images of cards distributed
-  for (let player of players) {
-    for (let card of player.hand1) {
-    }
-  }
+
   // reset cards distributed
   [playerHand1.length, playerHand2] = [0, undefined];
   [friendLeftHand.length, friendRightHand.length, dealerHand.length] = [
@@ -299,6 +296,28 @@ function resetHand() {
   ];
 }
 
+function resetHandUI(
+  hand1Tag,
+  hand2Tag,
+  friendLeftTag,
+  friendRightTag,
+  dealerTag
+) {
+  // remove images of cards distributed to hand1
+  const handsToReset = [
+    hand1Tag,
+    hand2Tag,
+    friendLeftTag,
+    friendRightTag,
+    dealerTag,
+  ];
+  for (hand of handsToReset) {
+    while (hand.firstChild) {
+      console.log(hand.firstChild);
+      hand.removeChild(hand.firstChild);
+    }
+  }
+}
 // INCLUDE COMPUTER LOGIC FOR CHECKING VALUE AND DETERMINE STAND/BUST AFTER HITTING
 
 /*----------------------------- Event Listeners -----------------------------*/
