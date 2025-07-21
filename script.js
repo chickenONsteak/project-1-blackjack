@@ -344,6 +344,7 @@ function resetHandUI() {
 startButton.addEventListener("click", () => {
   landingPage.style.display = "none";
   gamePage.style.display = "grid";
+  messageBoard.innerText = `Place your bets!\nYou have $${yen.balance} remaining.`;
 });
 
 // PLACING BETS
@@ -363,8 +364,9 @@ hitButton.addEventListener("click", () => {
   if (playerHand1Value !== 0) {
     yen.hit(playerHand1, "hand1");
     playerHand1Value = yen.checkHandValue(playerHand1);
+    messageBoard.innerText = `You got ${playerHand1Value} in total.`;
     if (playerHand1Value > 21) {
-      messageBoard.innerText = `It's a bust! Total hand value: ${playerHand1Value}`;
+      messageBoard.innerText = `Unlucky! You got ${playerHand1Value} in total.`;
       playerHand1.length = 0; // reset hand1 since bust
       // check if there's a hand2
       if (playerHand2 === undefined) {
@@ -397,8 +399,14 @@ standButton.addEventListener("click", () => {
       messageBoard.innerText = "What do you want to do for your 2nd hand?";
     } else {
       // if player stand after >= 2 cards in 2nd hand, it means that the stand is for the 2nd hand
+      actionButtons.style.display = "none";
+      nextHandButton.style.display = "flex";
       playerHand2Value = yen.checkHandValue(playerHand2);
     }
+  } else {
+    // if player does not hand a 2nd hand
+    actionButtons.style.display = "none";
+    nextHandButton.style.display = "flex";
   }
   // compare results
   dealerValue = dealer.checkHandValue(dealerHand);
@@ -408,12 +416,12 @@ standButton.addEventListener("click", () => {
   }
   if (playerHand1Value > dealerValue && playerHand1Value <= 21) {
     updateBalance(yen, "amount1");
-    messageBoard.innerText = "Hand 1 won!";
+    messageBoard.innerText = `You won $${yen.bet1}!`;
   }
   if (playerHand2 !== undefined) {
     if (playerHand2Value > dealerValue && playerHand2Value <= 21) {
       updateBalance(yen, "amount2");
-      messageBoard.innerText = "Hand 2 won!";
+      messageBoard.innerText = `You won $${yen.bet2}!`;
     }
   }
 });
@@ -450,6 +458,7 @@ splitButton.addEventListener("click", () => {
 
 nextHandButton.addEventListener("click", () => {
   standHand1 = false;
+  nextHandButton.style.display = "none";
   resetHand();
   resetHandUI();
   placeBetUI.style.display = "flex";
