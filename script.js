@@ -455,4 +455,3 @@ nextHandButton.addEventListener("click", () => {
   placeBetUI.style.display = "flex";
   postBetUI.style.display = "none";
 });
-/*------------------------------- Game Logic --------------------------------*/
