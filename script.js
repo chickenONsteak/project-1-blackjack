@@ -40,6 +40,7 @@ class Deck {
         this.deck.push(new Card(value, element, cardImages[imgObjKey]));
       });
     });
+    console.log(this.deck);
   }
 
   // use the modified Fisher-Yates shuffle algorithm
@@ -99,12 +100,20 @@ class Players {
   }
 
   // player draws a card
-  hit(hand, shuffledDeck, handHtmlId) {
+  hit(hand, handHtmlId) {
     // check if player has split if trying to hit hand2
     // note: without splitting, hand2 = undefined is falsy while empty array is truthy
     if (hand) {
-      const cardDeck = shuffledDeck.deck;
-      const drawnCard = cardDeck.shift();
+      let drawnCard;
+      // while first card is not undefined
+      for (let i = 0; i < shuffledDeck.deck.length; i++) {
+        if (shuffledDeck.deck[i]) {
+          drawnCard = shuffledDeck.deck[i];
+          shuffledDeck.deck.splice(i, 1);
+          break;
+        }
+      }
+      console.log(drawnCard);
       hand.push(drawnCard);
 
       // update cards displayed on hand
@@ -173,9 +182,17 @@ class Dealer {
     return totalValue;
   }
 
-  hit(hand, shuffledDeck, handHtmlId) {
-    const cardDeck = shuffledDeck.deck;
-    const drawnCard = cardDeck.shift();
+  hit(hand, handHtmlId) {
+    let drawnCard;
+    // while first card is not undefined
+    for (let i = 0; i < shuffledDeck.deck.length; i++) {
+      if (shuffledDeck.deck[i]) {
+        drawnCard = shuffledDeck.deck[i];
+        shuffledDeck.deck.splice(i, 1);
+        break;
+      }
+    }
+    console.log(drawnCard);
     hand.push(drawnCard);
 
     // update cards displayed on hand
@@ -198,7 +215,7 @@ const [yen, jack, brack] = players; // destructure to create 3 variables in 1 go
 const dealer = new Dealer("Dealer", "dealer-hands");
 let shuffledDeck;
 const playerHand1 = yen.hand1;
-const playerHand2 = yen.hand2;
+let playerHand2 = yen.hand2;
 const friendLeftHand = brack.hand1;
 const friendRightHand = jack.hand1;
 const dealerHand = dealer.hand1;
@@ -234,6 +251,9 @@ const bet1Display = document.querySelector("#amount1");
 const bet2Display = document.querySelector("#amount2");
 const playerHand1UI = document.querySelector("#hand1");
 const playerHand2UI = document.querySelector("#hand2");
+const dealerHandUI = document.querySelector("#dealer-hands");
+const friendLeftHandUI = document.querySelector("#friend-left-hand");
+const friendRightHandUI = document.querySelector("#friend-right-hand");
 
 /*-------------------------------- Functions --------------------------------*/
 function populateBet(event) {
@@ -271,12 +291,9 @@ function distributeCards() {
   // each player draw 2 cards each facing up
   for (let orbits = 0; orbits < 2; orbits++) {
     for (const player of players) {
-      player.hit(player.hand1, shuffledDeck, player.hand1UIId);
+      player.hit(player.hand1, player.hand1UIId);
     }
-    dealer.hit(dealerHand, shuffledDeck, dealer.hand1UIId);
-
-    playerHand1Value = yen.checkHandValue(playerHand1);
-    console.log(playerHand1Value);
+    dealer.hit(dealerHand, dealer.hand1UIId);
   }
 }
 
@@ -296,28 +313,30 @@ function resetHand() {
   ];
 }
 
-function resetHandUI(
-  hand1Tag,
-  hand2Tag,
-  friendLeftTag,
-  friendRightTag,
-  dealerTag
-) {
+function resetHandUI() {
   // remove images of cards distributed to hand1
-  const handsToReset = [
-    hand1Tag,
-    hand2Tag,
-    friendLeftTag,
-    friendRightTag,
-    dealerTag,
-  ];
-  for (hand of handsToReset) {
-    while (hand.firstChild) {
-      console.log(hand.firstChild);
-      hand.removeChild(hand.firstChild);
-    }
+  while (playerHand1UI.firstChild) {
+    console.log(playerHand1UI.firstChild);
+    playerHand1UI.removeChild(playerHand1UI.firstChild);
+  }
+  while (playerHand2UI.firstChild) {
+    console.log(playerHand2UI.firstChild);
+    playerHand2UI.removeChild(playerHand2UI.firstChild);
+  }
+  while (dealerHandUI.firstChild) {
+    console.log(dealerHandUI.firstChild);
+    dealerHandUI.removeChild(dealerHandUI.firstChild);
+  }
+  while (friendLeftHandUI.firstChild) {
+    console.log(friendLeftHandUI.firstChild);
+    friendLeftHandUI.removeChild(friendLeftHandUI.firstChild);
+  }
+  while (friendRightHandUI.firstChild) {
+    console.log(friendRightHandUI.firstChild);
+    friendRightHandUI.removeChild(friendRightHandUI.firstChild);
   }
 }
+
 // INCLUDE COMPUTER LOGIC FOR CHECKING VALUE AND DETERMINE STAND/BUST AFTER HITTING
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -342,7 +361,7 @@ placeBetButton.addEventListener("click", () => {
 hitButton.addEventListener("click", () => {
   playerHand1Value = yen.checkHandValue(playerHand1);
   if (playerHand1Value !== 0) {
-    yen.hit(playerHand1, shuffledDeck, "hand1");
+    yen.hit(playerHand1, "hand1");
     playerHand1Value = yen.checkHandValue(playerHand1);
     if (playerHand1Value > 21) {
       messageBoard.innerText = `It's a bust! Total hand value: ${playerHand1Value}`;
@@ -352,13 +371,13 @@ hitButton.addEventListener("click", () => {
         actionButtons.style.display = "none";
         nextHandButton.style.display = "flex";
       } else {
-        yen.hit(playerHand2, shuffledDeck, "hand2"); // give second card for hand2
+        yen.hit(playerHand2, "hand2"); // give second card for hand2
       }
     }
   }
   // if player splits, going bust on hand1 will straight away distribute 2nd card to hand2 — hence length >= 2
   if (playerHand2 !== undefined && playerHand2.length >= 2) {
-    yen.hit(playerHand2, shuffledDeck, "hand2");
+    yen.hit(playerHand2, "hand2");
     playerHand2Value = yen.checkHandValue(playerHand2);
     if (playerHand2Value > 21) {
       messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
@@ -374,7 +393,7 @@ standButton.addEventListener("click", () => {
   // if player stand for 1st hand and there is a 2nd hand, draw 1 card for the 2nd hand
   if (playerHand2 !== undefined) {
     if (playerHand2.length < 2) {
-      yen.hit(playerHand2, shuffledDeck, "hand2"); // stand is for the 1st hand, and give second card for hand2
+      yen.hit(playerHand2, "hand2"); // stand is for the 1st hand, and give second card for hand2
       messageBoard.innerText = "What do you want to do for your 2nd hand?";
     } else {
       // if player stand after >= 2 cards in 2nd hand, it means that the stand is for the 2nd hand
@@ -384,7 +403,7 @@ standButton.addEventListener("click", () => {
   // compare results
   dealerValue = dealer.checkHandValue(dealerHand);
   while (dealerValue < 17) {
-    dealer.hit(dealerHand, shuffledDeck, "dealer-hands");
+    dealer.hit(dealerHand, "dealer-hands");
     dealerValue = dealer.checkHandValue(dealerHand);
   }
   if (playerHand1Value > dealerValue && playerHand1Value <= 21) {
@@ -403,7 +422,14 @@ doubleDownButton.addEventListener("click", () => {
   if (standHand1) {
     const isDoubled = yen.doubleDown(yen.bet2);
     if (isDoubled !== -1) {
-      bet2Display.innerText = yen.bet2;
+      bet2Display.innerText = yen.bet2 * 2;
+    } else {
+      messageBoard.innerText = "Not enough funds to double down.";
+    }
+  } else {
+    const isDoubled = yen.doubleDown(yen.bet1);
+    if (isDoubled !== -1) {
+      bet1Display.innerText = yen.bet1 * 2;
     } else {
       messageBoard.innerText = "Not enough funds to double down.";
     }
@@ -425,6 +451,8 @@ splitButton.addEventListener("click", () => {
 nextHandButton.addEventListener("click", () => {
   standHand1 = false;
   resetHand();
+  resetHandUI();
+  placeBetUI.style.display = "flex";
+  postBetUI.style.display = "none";
 });
 /*------------------------------- Game Logic --------------------------------*/
-// while (yen.balance > 0) {}
