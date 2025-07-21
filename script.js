@@ -534,7 +534,7 @@ doubleDownButton.addEventListener("click", () => {
         nextHandButton.style.display = "flex";
       }
     } else {
-      messageBoard.innerText = "Not enough funds to double down.";
+      messageBoard.innerText = "You cannot double down.";
     }
   } else {
     // if doubling hand1

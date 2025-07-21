@@ -83,8 +83,9 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: end;
   gap: 6rem;
-  margin-top: 11.2rem;
+  margin-bottom: 4.5rem;
 }
 
 #game-page {
