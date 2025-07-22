@@ -28,3 +28,6 @@
     b. risk appetite -> based on whether you had decent hands but yet still draw OR bad hands but no draw
     c. greed -> based on your bet amt AND double / split
     d. win rate
+
+
+    

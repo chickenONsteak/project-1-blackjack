@@ -235,8 +235,6 @@ const friendRightHand = jack.hand1;
 const dealerHand = dealer.hand1;
 let playerHand1Value;
 let playerHand2Value;
-let friendLeftValue;
-let friendRightValue;
 let dealerValue;
 let standHand1 = false;
 
@@ -418,18 +416,6 @@ hitButton.addEventListener("click", () => {
       }
     }
   }
-  // if player splits, going bust on hand1 will straight away distribute 2nd card to hand2 — hence length >= 2
-  // if (playerHand2 !== undefined && playerHand2.length >= 2) {
-  //   yen.hit(playerHand2, "hand2");
-  //   playerHand2Value = yen.checkHandValue(playerHand2);
-  //   messageBoard.innerText = `You got ${playerHand2Value} in total.`;
-  //   console.log(playerHand2Value);
-  //   if (playerHand2Value > 21) {
-  //     messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
-  //     actionButtons.style.display = "none";
-  //     nextHandButton.style.display = "flex";
-  //   }
-  // }
 });
 
 standButton.addEventListener("click", () => {

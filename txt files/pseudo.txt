@@ -36,3 +36,4 @@ if get a total value of 9-11
 
 5. BANKER'S ACTION
 draw if total value < 17
+
