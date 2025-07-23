@@ -1,6 +1,25 @@
 /*--------------------------------- Imports ---------------------------------*/
 import { cardImages } from "./assets/cards.js";
 
+/*-------------------------------- Constants --------------------------------*/
+const players = [
+  new Players("Yen", 1000, "hand1", "hand2"),
+  new Players("Brack", 1000, "friend-left-hand"),
+  new Players("Jack", 1000, "friend-right-hand"),
+];
+const [yen, jack, brack] = players; // destructure to create 3 variables in 1 go
+const dealer = new Dealer("Dealer", "dealer-hands");
+let shuffledDeck;
+const playerHand1 = yen.hand1;
+let playerHand2 = yen.hand2;
+const friendLeftHand = brack.hand1;
+const friendRightHand = jack.hand1;
+const dealerHand = dealer.hand1;
+let playerHand1Value;
+let playerHand2Value;
+let dealerValue;
+let standHand1 = false;
+
 /*--------------------------------- Classes ---------------------------------*/
 class Card {
   constructor(rank, suit, img) {
@@ -218,25 +237,6 @@ class Dealer {
     playerHandUI.appendChild(img);
   }
 }
-
-/*-------------------------------- Constants --------------------------------*/
-const players = [
-  new Players("Yen", 1000, "hand1", "hand2"),
-  new Players("Brack", 1000, "friend-left-hand"),
-  new Players("Jack", 1000, "friend-right-hand"),
-];
-const [yen, jack, brack] = players; // destructure to create 3 variables in 1 go
-const dealer = new Dealer("Dealer", "dealer-hands");
-let shuffledDeck;
-const playerHand1 = yen.hand1;
-let playerHand2 = yen.hand2;
-const friendLeftHand = brack.hand1;
-const friendRightHand = jack.hand1;
-const dealerHand = dealer.hand1;
-let playerHand1Value;
-let playerHand2Value;
-let dealerValue;
-let standHand1 = false;
 
 /*---------------------------- Variables (state) ----------------------------*/
 
