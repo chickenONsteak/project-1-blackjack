@@ -1,6 +1,13 @@
 /*--------------------------------- Imports ---------------------------------*/
 import { cardImages } from "./assets/cards.js";
 
+/*---------------------------- Global Constants -----------------------------*/
+let shuffledDeck;
+let playerHand1Value;
+let playerHand2Value;
+let dealerValue;
+let standHand1 = false;
+
 /*--------------------------------- Classes ---------------------------------*/
 class Card {
   constructor(rank, suit, img) {
@@ -227,16 +234,11 @@ const players = [
 ];
 const [yen, jack, brack] = players; // destructure to create 3 variables in 1 go
 const dealer = new Dealer("Dealer", "dealer-hands");
-let shuffledDeck;
 const playerHand1 = yen.hand1;
 let playerHand2 = yen.hand2;
 const friendLeftHand = brack.hand1;
 const friendRightHand = jack.hand1;
 const dealerHand = dealer.hand1;
-let playerHand1Value;
-let playerHand2Value;
-let dealerValue;
-let standHand1 = false;
 
 /*---------------------------- Variables (state) ----------------------------*/
 
@@ -338,23 +340,18 @@ function resetHand() {
 function resetHandUI() {
   // remove images of cards distributed to hand1
   while (playerHand1UI.firstChild) {
-    console.log(playerHand1UI.firstChild);
     playerHand1UI.removeChild(playerHand1UI.firstChild);
   }
   while (playerHand2UI.firstChild) {
-    console.log(playerHand2UI.firstChild);
     playerHand2UI.removeChild(playerHand2UI.firstChild);
   }
   while (dealerHandUI.firstChild) {
-    console.log(dealerHandUI.firstChild);
     dealerHandUI.removeChild(dealerHandUI.firstChild);
   }
   while (friendLeftHandUI.firstChild) {
-    console.log(friendLeftHandUI.firstChild);
     friendLeftHandUI.removeChild(friendLeftHandUI.firstChild);
   }
   while (friendRightHandUI.firstChild) {
-    console.log(friendRightHandUI.firstChild);
     friendRightHandUI.removeChild(friendRightHandUI.firstChild);
   }
 }
@@ -408,7 +405,6 @@ hitButton.addEventListener("click", () => {
       yen.hit(playerHand2, "hand2");
       playerHand2Value = yen.checkHandValue(playerHand2);
       messageBoard.innerText = `You got ${playerHand2Value} in total.`;
-      console.log(playerHand2Value);
       if (playerHand2Value > 21) {
         messageBoard.innerText = `It's a bust! Total hand value: ${playerHand2Value}`;
         actionButtons.style.display = "none";
@@ -423,8 +419,6 @@ standButton.addEventListener("click", () => {
   playerHand1Value = yen.checkHandValue(playerHand1);
   // if player stand for 1st hand and there is a 2nd hand, draw 1 card for the 2nd hand
   playerHand2 = yen.hand2;
-  console.log(yen.hand2);
-  console.log(playerHand2);
   if (playerHand2 !== undefined) {
     if (playerHand2.length < 2) {
       yen.hit(playerHand2, "hand2"); // stand is for the 1st hand, and give second card for hand2
