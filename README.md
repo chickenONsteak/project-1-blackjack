@@ -34,7 +34,6 @@ This game was created after picking up the basics of HTML, CSS, Bootstrap, and J
 - **Javascript** *(Vanilla)* — game logic and DOM manipulation
 ---
 ## Getting Started
-
 To hop onto the game, simply try it on the [live demo](https://chickenonsteak.github.io/project-1-blackjack/) site.
 ---
 ## Folder Structure
@@ -60,26 +59,26 @@ To hop onto the game, simply try it on the [live demo](https://chickenonsteak.gi
 ## Planning process
 With a short timeframe to complete the project AND experimenting with a new approach, planning was crucial.
 ### 1. Planning the structure and layout of the game
+> Before doing anything, I listed down what I envisioned the game to look like and listed down the components that users will see and behaviours they will encounter.
 ![Planning process](assets/README-imgs/pseudocode.png)
-Before doing anything, I listed down what I envisioned the game to look like and listed down the components that users will see and behaviours they will encounter.
 
 ### 2. Attempt at Pseudocode
+> I tried listing down the pseudocodes for the game's logic, but since Pseudocode is a new concept to me, I was unable to extract a lot of value from this exercise.
 ![Pseudocode](assets/README-imgs/pseudocode.png)
-I tried listing down the pseudocodes for the game's logic, but since Pseudocode is a new concept to me, I was unable to extract a lot of value from this exercise.
 
 ### 3. Structuring the HTML & Bootstrap + Styling with CSS
+> After planning out what users will see and behaviours they will experience, I got started coding out the front-end first.
 ![Structuring HTML](assets/README-imgs/structuring-HTML.png)
-After planning out what users will see and behaviours they will experience, I got started coding out the front-end first.
 
 ### 4. Preparing the assets
+> All images, regardless of what they are, are stored into the ./assets directory.
 ![Structuring HTML](assets/README-imgs/Preparing-the-assets.png)
-All images, regardless of what they are, are stored into the ./assets directory.
 
 ### 5. Creating Classes & methods
+> Since I was planning to use OOP to code out this game, there were a lot of planning ahead items involved so that the methods are reusable and clean.
 ![Classes and methods](assets/README-imgs/Classes-and-methods.png)
-Since I was planning to use OOP to code out this game, there were a lot of planning ahead items involved so that the methods are reusable and clean.
 
 ### 6. Add event listeners
+> The game waits for users to press an action button in order to carry out an action. Hence, there is a need for event listeners — which also improves readability throughout the codes.
 ![adding event listeners](assets/README-imgs/eventlisteners.png)
-The game waits for users to press an action button in order to carry out an action. Hence, there is a need for event listeners — which also improves readability throughout the codes.
 
