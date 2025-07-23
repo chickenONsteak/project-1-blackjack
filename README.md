@@ -3,12 +3,12 @@
 ![Blackjack game title and Enter casino button](assets/README-imgs/landing-pg.png)
 ---
 ## Table of Contents
-- About Blackjack
-- Tech Stack
-- Getting Started
-- Folder Structure
-- Usage
-- Demo & Screensshots
+- [About The Game](https://github.com/chickenONsteak/project-1-blackjack?tab=readme-ov-file#about-the-game)
+- [Tech Stack](https://github.com/chickenONsteak/project-1-blackjack?tab=readme-ov-file#tech-stack)
+- [Getting Started](https://github.com/chickenONsteak/project-1-blackjack?tab=readme-ov-file#getting-started)
+- [Folder Structure](https://github.com/chickenONsteak/project-1-blackjack?tab=readme-ov-file#folder-structure)
+- [Usage](https://github.com/chickenONsteak/project-1-blackjack?tab=readme-ov-file#usage)
+- [Planning Process](https://github.com/chickenONsteak/project-1-blackjack?tab=readme-ov-file#planning-process)
 ---
 ## About The Game
 You and your friends, Brack and Jack, thought that it would be a good idea to try your luck at the casino to make big bucks. Going in with $1000, you anticipate the luxurious celebratory meal you and your friends will be having after the session.
@@ -24,7 +24,6 @@ Main goal for MVP:
 Stretch goal:
 - Allow players to double their bets
 - Allow players to split their hands
-
 
 This game was created after picking up the basics of HTML, CSS, Bootstrap, and JavaScript to put them into practice. The goal was to keep features simple so that I am able to spend more time exploring OOP (Object Oriented Program) and following good practices.
 ---
@@ -60,7 +59,7 @@ To hop onto the game, simply try it on the [live demo](https://chickenonsteak.gi
 ## Planning process
 With a short timeframe to complete the project AND experimenting with a new approach, planning was crucial.
 ### 1. Planning the structure and layout of the game
-![Planning process texts](assets/README-imgs/Preparing the assets.png)
+![Planning process](assets/README-imgs/pseudocode.png)
 Before doing anything, I listed down what I envisioned the game to look like and listed down the components that users will see and behaviours they will encounter.
 
 ### 2. Attempt at Pseudocode
