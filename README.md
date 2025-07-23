@@ -34,6 +34,7 @@ This game was created after picking up the basics of HTML, CSS, Bootstrap, and J
 - **Javascript** *(Vanilla)* — game logic and DOM manipulation
 ---
 ## Getting Started
+
 To hop onto the game, simply try it on the [live demo](https://chickenonsteak.github.io/project-1-blackjack/) site.
 ---
 ## Folder Structure
@@ -63,15 +64,15 @@ With a short timeframe to complete the project AND experimenting with a new appr
 Before doing anything, I listed down what I envisioned the game to look like and listed down the components that users will see and behaviours they will encounter.
 
 ### 2. Attempt at Pseudocode
-![Blackjack game title and Enter casino button](assets/README-imgs/landing-pg.png)
+![Pseudocode](assets/README-imgs/pseudocode.png)
 I tried listing down the pseudocodes for the game's logic, but since Pseudocode is a new concept to me, I was unable to extract a lot of value from this exercise.
 
 ### 3. Structuring the HTML & Bootstrap + Styling with CSS
-![Pseudocode](assets/README-imgs/pseudocode.png)
+![Structuring HTML](assets/README-imgs/structuring-HTML.png)
 After planning out what users will see and behaviours they will experience, I got started coding out the front-end first.
 
 ### 4. Preparing the assets
-![Consolidating images](assets/README-imgs/Preparing the assets.png)
+![Structuring HTML](assets/README-imgs/Preparing-the-assets.png)
 All images, regardless of what they are, are stored into the ./assets directory.
 
 ### 5. Creating Classes & methods
